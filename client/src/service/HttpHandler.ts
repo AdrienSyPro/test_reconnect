@@ -4,7 +4,7 @@ export const ERRORS_CODES = new Map(
     ]
 );
 
-export interface Token {
+export interface JWTToken {
     refresh: string,
     access: string
 }

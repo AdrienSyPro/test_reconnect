@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import names from "./names";
 import { AuthForm } from "./AuthForm";
+import { InfosUser } from "./InfosUser";
 
 const apiEndpoint = "https://avatars.dicebear.com/v2/avataaars/";
 const apiOptions = "options[mood][]=happy";
@@ -15,6 +16,9 @@ function App() {
   const [registeredBeneficiaries, setRegisteredBeneficiaries] = React.useState(
     []
   );
+
+  const [userAuthentified, setUserAuthentified] = React.useState(null);
+
   const fetchBeneficiaries = async () => {
     const response = await fetch(beneficiariesEndpoint, {});
     const json = await response.json();
@@ -31,7 +35,11 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <AuthForm />  
+        {!userAuthentified ?
+          <AuthForm setUserAuthentified={setUserAuthentified} /> :
+          <InfosUser user={userAuthentified[0]} />
+        }
+          
         <h1>Bienvenue dans le gestionnaire de bénéficaires Reconnect</h1>
         <hr />
         <h3>Personnes stockées en base</h3>

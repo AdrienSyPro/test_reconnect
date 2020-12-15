@@ -1,5 +1,5 @@
 import React from 'react';
-import { HttpHandler } from './service/HttpHandler';
+import { User } from './model/User';
 
 export class AuthForm extends React.Component {
     constructor (props) {
@@ -84,7 +84,12 @@ export class AuthForm extends React.Component {
         )
         .then(
             (token) => {
-                console.log(token);
+                let user = new User();
+
+                user.username = this.state.formValues.username;
+                user.token = token;
+
+                this.props.setUserAuthentified([user]);
             },
             (error) => {
                 console.log(error);

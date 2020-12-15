@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import names from "./names";
+import { AuthForm } from "./AuthForm";
 
 const apiEndpoint = "https://avatars.dicebear.com/v2/avataaars/";
 const apiOptions = "options[mood][]=happy";
@@ -30,6 +31,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <AuthForm />  
         <h1>Bienvenue dans le gestionnaire de bénéficaires Reconnect</h1>
         <hr />
         <h3>Personnes stockées en base</h3>

@@ -89,7 +89,7 @@ export class AuthForm extends React.Component {
                 user.username = this.state.formValues.username;
                 user.token = token;
 
-                this.props.setUserAuthentified([user]);
+                this.props.handleAuthentication([user]);
             },
             (error) => {
                 console.log(error);

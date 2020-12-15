@@ -31,9 +31,12 @@ class BeneficiaryViewSet(viewsets.ModelViewSet):
         beneficiary = get_object_or_404(queryset, name=pk)
         serializer = BeneficiarySerializer(beneficiary)
         return Response(serializer.data)
-    # queryset = Beneficiary.objects.all()
-    # serializer_class = BeneficiarySerializer
-
+        
+    def destroy(self, request, pk=None):
+        queryset = Beneficiary.objects.all()
+        beneficiary = get_object_or_404(queryset, name=pk)
+        self.perform_destroy(beneficiary)
+        return Response()
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()

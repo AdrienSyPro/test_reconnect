@@ -10,11 +10,16 @@ const apiEndpoint = "https://avatars.dicebear.com/v2/avataaars/";
 const apiOptions = "options[mood][]=happy";
 const backendUrl = "http://localhost:8000/";
 const beneficiariesEndpoint = `${backendUrl}api/beneficiaries/`;
+const userEndpoint = `${backendUrl}/admin/auth/user/?q=`;
 // const loginEndpoint = `${backendUrl}api/token`;
 
 const getAvatar = name => `${apiEndpoint}${name}.svg?${apiOptions}`;
 
 function App() {
+  var headers = new Headers({
+    "Content-Type": "application/json"
+  });
+
   const [registeredBeneficiaries, setRegisteredBeneficiaries] = React.useState(
     []
   );
@@ -41,15 +46,24 @@ function App() {
     setRegisteredBeneficiaries([json]);
   };
 
-  const headers = new Headers({
-    "Content-Type": "application/json"
-  });
+  const deleteOneBeneficiary = async (name) => {
+    const response = await fetch(beneficiariesEndpoint + name, {
+      method: "DELETE"
+    });
+
+    fetchBeneficiaries();
+  };
 
   /**
    * Add a new beneficiary
    * @param {string} name 
    */
   async function addBeneficiaries(name) {
+    headers = new Headers({
+      "Content-Type": "application/json",
+      // "Authorization": "Bearer " + userAuthentified[0].token.access
+    });
+
     const response = await fetch(beneficiariesEndpoint, {
       method: "POST",
       headers: headers,
@@ -71,11 +85,15 @@ function App() {
     setLocalSearch(searchText);
   }
 
+function handleAuthentication(user) {
+  setUserAuthentified(user);
+}
+
   return (
     <div className="App">
       <header className="App-header">
         {!userAuthentified ?
-          <AuthForm setUserAuthentified={setUserAuthentified} /> :
+          <AuthForm handleAuthentication={handleAuthentication} /> :
           <InfosUser user={userAuthentified[0]} />
         }
           
@@ -89,6 +107,7 @@ function App() {
             <div className="Beneficiary-card" key={beneficiary.name + index}>
               <img src={getAvatar(beneficiary.name)} alt={beneficiary.name} />
               <span>{beneficiary.name}</span>
+              <button onClick={() => deleteOneBeneficiary(beneficiary.name)}>Supprimer</button>
             </div>
           ))}
         </div>
